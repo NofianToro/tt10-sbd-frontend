@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:5000';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 export const api = {
   // --- USERS & AUTH ---
@@ -39,11 +39,11 @@ export const api = {
     const res = await fetch(`${BASE_URL}/songs`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        title, 
-        artist, 
-        tags, 
-        discovered_from: discoveredFrom 
+      body: JSON.stringify({
+        title,
+        artist,
+        tags,
+        discovered_from: discoveredFrom
       })
     });
     if (!res.ok) throw new Error('Failed to create song');
@@ -67,7 +67,6 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: userId, song_id: songId, grade })
     });
-    // If 409, they already ranked it. We could handle switching to PUT here automatically!
     if (!res.ok) throw new Error('Failed to submit ranking');
     return res.json();
   },
